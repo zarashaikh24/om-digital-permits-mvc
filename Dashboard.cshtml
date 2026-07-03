@@ -1,0 +1,148 @@
+﻿@model CleanValveManagement.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "O&M Digital Permits Dashboard";
+
+    string userType = ViewBag.UserType as string ?? "";
+    bool canViewCP = userType.Contains("CP");
+    bool canViewCNG = userType.Contains("CNG");
+    bool canViewSMA = userType.Contains("SMA");
+    bool isCPCNGDashboard = canViewCP && canViewCNG;
+    bool isCPSMADashboard = canViewCP && canViewSMA && !canViewCNG;
+}
+
+<div class="permit-dashboard @(isCPCNGDashboard || isCPSMADashboard ? "cp-cng-dashboard-page" : "")">
+
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1>Permit Dashboard</h1>
+            <p>Select a permit module to view and monitor permit requests.</p>
+        </div>
+    </div>
+
+    @if (isCPCNGDashboard)
+    {
+        <div class="cp-cng-row">
+            <a asp-controller="Permit" asp-action="CathodicProtection" class="module-card">
+                <h2>Cathodic Protection Permits</h2>
+                <p>View CP electrical, excavation, confined space and hot/cold work permits.</p>
+                <span>Open Module →</span>
+            </a>
+
+            <div class="mini-summary-grid">
+                <div class="dashboard-card requested"><span>Requested</span><strong>@Model.CPRequested</strong></div>
+                <div class="dashboard-card approved"><span>Approved</span><strong>@Model.CPApproved</strong></div>
+                <div class="dashboard-card rejected"><span>Rejected</span><strong>@Model.CPRejected</strong></div>
+                <div class="dashboard-card closed"><span>Closed</span><strong>@Model.CPClosed</strong></div>
+            </div>
+        </div>
+
+        <div class="cp-cng-row">
+            <a asp-controller="Permit" asp-action="CNG" class="module-card">
+                <h2>CNG Permits</h2>
+                <p>View CNG electrical, preventive maintenance, work at height and hot/cold permits.</p>
+                <span>Open Module →</span>
+            </a>
+
+            <div class="mini-summary-grid">
+                <div class="dashboard-card requested"><span>Requested</span><strong>@Model.CNGRequested</strong></div>
+                <div class="dashboard-card approved"><span>Approved</span><strong>@Model.CNGApproved</strong></div>
+                <div class="dashboard-card rejected"><span>Rejected</span><strong>@Model.CNGRejected</strong></div>
+                <div class="dashboard-card closed"><span>Closed</span><strong>@Model.CNGClosed</strong></div>
+            </div>
+        </div>
+    }
+    else if (isCPSMADashboard)
+    {
+        <div class="cp-cng-row">
+            <a asp-controller="Permit" asp-action="CathodicProtection" class="module-card">
+                <h2>Cathodic Protection Permits</h2>
+                <p>View CP electrical, excavation, confined space and hot/cold work permits.</p>
+                <span>Open Module →</span>
+            </a>
+
+            <div class="mini-summary-grid">
+                <div class="dashboard-card requested"><span>Requested</span><strong>@Model.CPRequested</strong></div>
+                <div class="dashboard-card approved"><span>Approved</span><strong>@Model.CPApproved</strong></div>
+                <div class="dashboard-card rejected"><span>Rejected</span><strong>@Model.CPRejected</strong></div>
+                <div class="dashboard-card closed"><span>Closed</span><strong>@Model.CPClosed</strong></div>
+            </div>
+        </div>
+
+        <div class="cp-cng-row">
+            <a asp-controller="Permit" asp-action="SMA" class="module-card">
+                <h2>SMA Permits</h2>
+                <p>View SMA valve chamber permit report data.</p>
+                <span>Open Module →</span>
+            </a>
+
+            <div class="mini-summary-grid">
+                <div class="dashboard-card requested"><span>Requested</span><strong>@Model.SMARequested</strong></div>
+                <div class="dashboard-card approved"><span>Approved</span><strong>@Model.SMAApproved</strong></div>
+                <div class="dashboard-card rejected"><span>Rejected</span><strong>@Model.SMARejected</strong></div>
+                <div class="dashboard-card closed"><span>Closed</span><strong>@Model.SMAClosed</strong></div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="module-grid">
+            @if (canViewCP)
+            {
+                <a asp-controller="Permit" asp-action="CathodicProtection" class="module-card">
+                    <h2>Cathodic Protection Permits</h2>
+                    <p>View CP electrical, excavation, confined space and hot/cold work permits.</p>
+                    <span>Open Module →</span>
+                </a>
+            }
+
+            @if (canViewCNG)
+            {
+                <a asp-controller="Permit" asp-action="CNG" class="module-card">
+                    <h2>CNG Permits</h2>
+                    <p>View CNG electrical, preventive maintenance, work at height and hot/cold permits.</p>
+                    <span>Open Module →</span>
+                </a>
+            }
+
+            @if (canViewSMA)
+            {
+                <a asp-controller="Permit" asp-action="SMA" class="module-card">
+                    <h2>SMA Permits</h2>
+                    <p>View SMA valve chamber permit report data.</p>
+                    <span>Open Module →</span>
+                </a>
+            }
+        </div>
+
+        <h3 class="summary-title">Permit Summary</h3>
+
+        <div class="dashboard-cards clean-summary">
+            <div class="dashboard-card total">
+                <span>Total Permits</span>
+                <strong>@Model.TotalPermits</strong>
+            </div>
+
+            <div class="dashboard-card requested">
+                <span>Requested</span>
+                <strong>@(Model.CPRequested + Model.CNGRequested + Model.SMARequested)</strong>
+            </div>
+
+            <div class="dashboard-card approved">
+                <span>Approved</span>
+                <strong>@(Model.CPApproved + Model.CNGApproved + Model.SMAApproved)</strong>
+            </div>
+
+            <div class="dashboard-card rejected">
+                <span>Rejected</span>
+                <strong>@(Model.CPRejected + Model.CNGRejected + Model.SMARejected)</strong>
+            </div>
+
+            <div class="dashboard-card closed">
+                <span>Closed</span>
+                <strong>@(Model.CPClosed + Model.CNGClosed + Model.SMAClosed)</strong>
+            </div>
+        </div>
+    }
+
+</div>

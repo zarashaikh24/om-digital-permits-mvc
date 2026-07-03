@@ -1,0 +1,635 @@
+﻿@model CleanValveManagement.Models.CngPreventiveMaintenancePermitModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Calibri;
+        }
+
+        h2 {
+            font-size: 14px;
+            margin: 2px;
+        }
+
+        h3 {
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        .printable {
+            padding: 5px;
+        }
+
+        .main-table {
+            width: 1200px;
+            font-family: Calibri;
+            font-size: 7px;
+            border: 1px solid black;
+        }
+
+            .main-table td {
+                vertical-align: top;
+            }
+
+        .section-title {
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .inner-table {
+            font-size: 7px;
+            width: 600px;
+            border: 1px solid black;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        .gas-table {
+            table-layout: fixed;
+        }
+
+            .gas-table td,
+            .gas-table th {
+                padding: 2px !important;
+                height: 16px;
+                line-height: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: clip;
+            }
+
+            .inner-table th,
+            .inner-table td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 5px;
+            }
+
+        .no-border-table {
+            font-size: 7px;
+            width: 600px;
+            border-collapse: collapse;
+        }
+
+            .no-border-table td {
+                vertical-align: top;
+            }
+
+        .small-cell {
+            width: 30px;
+            height: 10px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .auto-style1 {
+            width: 192px;
+        }
+
+        .auto-style2 {
+            width: auto;
+        }
+
+        @@media print {
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="printable">
+        <table id="tableHeader" class="main-table">
+
+            <tr>
+                <td class="auto-style1"></td>
+                <td style="width: 200px;">
+                    <img src="~/Images/mgl-logo.png" style="height: 60px; width: 125px" />
+                </td>
+                <td style="width: 400px; text-align: center;" colspan="2">
+                    <h2>MAHANAGAR GAS LTD.</h2>
+                    <h3><b>Permit to Work for CNG Preventive Maintenance</b></h3>
+                </td>
+                <td style="width: 200px;">
+                    <h3><b>CNG RE 035</b></h3>
+                    <h3><b>Permit No: @Model.PermitNo</b></h3>
+                </td>
+                <td style="width: 200px;"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">1. Site Details</td>
+                <td colspan="3" class="section-title">9. Competent at site (Technician)</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="font-size:9px;">
+
+                    <table>
+                        <tr>
+                            <td style="font-size: 8px; width: 200px;"><b>Date of issue:</b> @Model.DateOfIssue</td>
+                            <td style="font-size: 8px; width: 200px;"><b>Site Name:</b> @Model.SiteName</td>
+                            <td style="font-size: 8px; width: 200px;"><b>Site Location:</b> @Model.SiteLocation</td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan="3" style="font-size: 7px;">
+                    I have understood to undertake the maintenance activity of DRS/MRS and the necessary precautions has been complied by me.
+                    I have been placed in direct and continuous charge of work mentioned above and accept the responsibility of carrying out the said work considering all the safety precaution in order to avoid any danger.
+                    I shall be available at the site for the entire duration of work and shall inform the EIC/TPE at the starting of the job.
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">2. Electrical Isolation</td>
+                <td colspan="3" style="font-size:9px;">
+                    <table>
+                        <tr>
+                            <td style="font-size: 7px; width: 150px;"><b>Name:</b> @Model.TechnicianName</td>
+                            <td style="font-size: 7px; width: 150px;"><b>Designation:</b> @Model.TechnicianDesignation</td>
+                            <td style="font-size: 7px; width: 150px;"><b>Sign:</b> @Model.TechnicianSign</td>
+                            <td style="font-size: 7px; width: 150px;"><b>Contact No:</b> @Model.TechnicianContactNo</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="font-size:9px;">
+                    <table class="inner-table">
+                        <tr>
+                            <th class="small-cell">Sr.No</th>
+                            <th>Check Point</th>
+                            <th class="small-cell">Lock No.</th>
+                            <th class="small-cell">Tag No.</th>
+                            <th class="small-cell">NA</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Isolate the main incomer in electric room. Put Lock & tag on it</td>
+                            <td>@Model.Lno1</td>
+                            <td>@Model.Tno1</td>
+                            <td>@Model.Na1</td>
+                        </tr>
+                        <tr>
+                            <td class="center">B</td>
+                            <td>Isolate the main incomer of capacitor tank at electrical room. Put lock & tag on it</td>
+                            <td>@Model.Lno2</td>
+                            <td>@Model.Tno2</td>
+                            <td>@Model.Na2</td>
+                        </tr>
+                        <tr>
+                            <td class="center">C</td>
+                            <td>Before carry out the work at capacitor bank check for Voltage with proper instrument & voltage level should be zero</td>
+                            <td colspan="3">Voltage Reading @Model.VoltageReading</td>
+                        </tr>
+                        <tr>
+                            <td class="center">D</td>
+                            <td>Isolate main feeder for CNG compressor. Put lock & tag on it</td>
+                            <td>@Model.Lno3</td>
+                            <td>@Model.Tno3</td>
+                            <td>@Model.Na3</td>
+                        </tr>
+                        <tr>
+                            <td class="center">F</td>
+                            <td>Isolate the main dispenser incomer in electric room. Put Lock & tag on it</td>
+                            <td>@Model.Lno4</td>
+                            <td>@Model.Tno4</td>
+                            <td>@Model.Na4</td>
+                        </tr>
+                        <tr>
+                            <td class="center">E</td>
+                            <td>Isolate main switch on compressor. Put lock & tag on it</td>
+                            <td>@Model.Lno5</td>
+                            <td>@Model.Tno5</td>
+                            <td>@Model.Na5</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td colspan="3" style="font-size:9px;">
+                    <table class="no-border-table">
+                        <tr><td colspan="3" class="section-title">10. Transfer of Permit: (if required)</td></tr>
+                        <tr>
+                            <td colspan="3">
+                                I have transferred this permit to …………………………………………………………………who now will be responsible for carrying out all the work mentioned above
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <table class="no-border-table">
+                                    <tr>
+                                        <td style="font-size: 8px; width: 300px;"><b>Person transferring the permit (EIC/TPE)</b></td>
+                                        <td style="font-size: 8px; width: 300px;"><b>Person receiving the Permit</b></td>
+                                    </tr>
+                                    <tr><td>Name:</td><td>Name:</td></tr>
+                                    <tr><td>Designation:</td><td>Designation:</td></tr>
+                                    <tr><td>Signature:</td><td>Signature:</td></tr>
+                                    <tr><td>Date & Time:</td><td>Date & Time:</td></tr>
+                                    <tr><td colspan="2" class="section-title">11. Steps to be followed to energize the system:</td></tr>
+                                    <tr><td colspan="2" style="font-size: 9px; padding-left: 10px;"><b>A) Energize the compressor:</b></td></tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <table class="inner-table">
+                                                <tr>
+                                                    <th>Sr.No</th>
+                                                    <th>Check Point</th>
+                                                    <th>Lock No.</th>
+                                                    <th>Tag No.</th>
+                                                    <th>NA</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="center">A</td>
+                                                    <td>Remove lock and tag from the discharge valve of the compressor.Open the discharge valve and close the vent valve</td>
+                                                    <td>@Model.Clno1</td>
+                                                    <td>@Model.Ctno1</td>
+                                                    <td>@Model.Cna1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="center">B</td>
+                                                    <td>Remove the lock and tag from the inlet suction valve. Open the inlet valve</td>
+                                                    <td>@Model.Clno2</td>
+                                                    <td>@Model.Ctno2</td>
+                                                    <td>@Model.Cna2</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">3. Gas Isolation of compressor</td>
+                <td colspan="3"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3">
+                    <table class="inner-table">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Check Point</th>
+                            <th>Lock No.</th>
+                            <th>Tag No.</th>
+                            <th>NA</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Isolate the inlet gas suction valve. Put lock & tag on it</td>
+                            <td>@Model.Lno6</td>
+                            <td>@Model.Tno6</td>
+                            <td>@Model.Na6</td>
+                        </tr>
+                        <tr>
+                            <td class="center">B</td>
+                            <td>Vent the gas in the compressor gradually & safety</td>
+                            <td>@Model.Lno7</td>
+                            <td>@Model.Tno7</td>
+                            <td>@Model.Na7</td>
+                        </tr>
+                        <tr>
+                            <td class="center">C</td>
+                            <td>
+                                Once the gas is completely vented isolate the discharge valve of the compressor. Put lock & tag on valve and note the pressure reading of following<br />
+                                1. Suction pressure @Model.SuctionPressure bar<br />
+                                2. Discharge pressure @Model.DischargePressure bar<br />
+                                3. BDV pressure @Model.BdvPressure bar<br />
+                                4. Suction filter pressure @Model.SuctionFilterPressure bar
+                            </td>
+                            <td>@Model.Lno8</td>
+                            <td>@Model.Tno8</td>
+                            <td>@Model.Na8</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td colspan="3">
+                    <table class="no-border-table">
+                        <tr>
+                            <td colspan="4" style="font-size: 9px; padding-left: 10px;">
+                                <b>B) Energize the capacitor bank / main electrical panel in electrical room:</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <table class="inner-table">
+                                    <colgroup>
+                                        <col style="width:35px;">
+                                        <col style="width:455px;">
+                                        <col style="width:48px;">
+                                        <col style="width:33px;">
+                                    </colgroup>
+                                    <tr>
+                                        <th>Sr.No</th>
+                                        <th>Check Point</th>
+                                        <th>YES/No.</th>
+                                        <th>NA.</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">A</td>
+                                        <td>Remove the lock & tag of the main capacitor incomer. Switch ON the capacitor main incomer</td>
+                                        <td>@Model.Cyn1</td>
+                                        <td>@Model.Cyna1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">B</td>
+                                        <td>Remover lock & tag of main incomer. Switch ON the main incomer</td>
+                                        <td>@Model.Cyn2</td>
+                                        <td>@Model.Cyna2</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">C</td>
+                                        <td>Remove lock & tag of main feeder for the compressor. Switch ON the feeder</td>
+                                        <td>@Model.Cyn3</td>
+                                        <td>@Model.Cyna3</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">D</td>
+                                        <td>Remove lock & tag of main switch from compressor electric panel. Turn the switch ON</td>
+                                        <td>@Model.Cyn4</td>
+                                        <td>@Model.Cyna4</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">4. Isolation for dispenser</td>
+                <td colspan="3" class="section-title" style="padding-left: 10px;">C) Energize the Dispenser:</td>
+            </tr>
+
+            <tr>
+                <td colspan="3">
+                    <table class="inner-table">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Check Point</th>
+                            <th>Lock No.</th>
+                            <th>Tag No.</th>
+                            <th>NA</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Isolate the inlet valve of dispenser & tag it</td>
+                            <td>@Model.Lno9</td>
+                            <td>@Model.Tno9</td>
+                            <td>@Model.Na9</td>
+                        </tr>
+                        <tr>
+                            <td class="center">B</td>
+                            <td>Vent the gas in the dispenser gradually & safely</td>
+                            <td>@Model.Lno10</td>
+                            <td>@Model.Tno10</td>
+                            <td>@Model.Na10</td>
+                        </tr>
+                        <tr>
+                            <td class="center">C</td>
+                            <td>
+                                Once the gas is completely vented isolate the isolation valve / emergency valve of the dispenser and note down the pressure of the following<br />
+                                1. Pressure in side A @Model.PressureA bar<br />
+                                2. Pressure in side B @Model.PressureB bar
+                            </td>
+                            <td>@Model.Lno11</td>
+                            <td>@Model.Tno11</td>
+                            <td>@Model.Na11</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td colspan="3">
+                    <table class="inner-table">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Check Point</th>
+                            <th>YES/No.</th>
+                            <th>NA.</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Close the vent line valve and remove the tag on main inlet valve of the dispenser. Open the inlet valve</td>
+                            <td>@Model.Cyn5</td>
+                            <td>@Model.Cyna5</td>
+                        </tr>
+                        <tr>
+                            <td class="center">B</td>
+                            <td>Remove the lock & tag on the main switch / MCB and switch ON dispenser main incomer in electrical room.</td>
+                            <td>@Model.Cyn6</td>
+                            <td>@Model.Cyna6</td>
+                        </tr>
+                        <tr>
+                            <td class="center">C</td>
+                            <td>Open the isolation valve / emergency valve</td>
+                            <td>@Model.Cyn7</td>
+                            <td>@Model.Cyna7</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">5. Isolation for Cascade</td>
+                <td colspan="3" class="section-title" style="padding-left: 10px;">D) Energize CO2 flooding system:</td>
+            </tr>
+
+            <tr>
+                <td colspan="3">
+                    <table class="inner-table">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Check Point</th>
+                            <th>Lock No.</th>
+                            <th>Tag No.</th>
+                            <th>NA</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Isolate the main incomer line of cascade. Put Lock & tag on it</td>
+                            <td>@Model.Lno13</td>
+                            <td>@Model.Tno13</td>
+                            <td>@Model.Na13</td>
+                        </tr>
+                        <tr>
+                            <td class="center">B</td>
+                            <td>Isolate the outlet valve of cascade. Put lock & tag on it.</td>
+                            <td>@Model.Lno14</td>
+                            <td>@Model.Tno14</td>
+                            <td>@Model.Na14</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td colspan="3">
+                    <table class="inner-table">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Check Point</th>
+                            <th>Lock No.</th>
+                            <th>Tag No.</th>
+                            <th>NA</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Open valve and remove the tag of CO2 cylinder</td>
+                            <td>@Model.Clno3</td>
+                            <td>@Model.Ctno3</td>
+                            <td>@Model.Cna3</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">6. Isolation of CO2 flooding system</td>
+                <td colspan="3" class="section-title">12. Work Completed (to be filled by competent person)</td>
+            </tr>
+
+            <tr>
+                <td colspan="3">
+                    <table class="inner-table">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Check Point</th>
+                            <th>Lock No.</th>
+                            <th>Tag No.</th>
+                            <th>NA</th>
+                        </tr>
+                        <tr>
+                            <td class="center">A</td>
+                            <td>Isolate the outlet valve of CO2 cylinder. Put Lock & tag on it</td>
+                            <td>@Model.Lno15</td>
+                            <td>@Model.Tno15</td>
+                            <td>@Model.Na15</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td colspan="3">
+                    <table class="no-border-table">
+                        <tr>
+                            <td colspan="3" style="font-size: 9px;">
+                                I confirm that the work specified has been completed successfully and installation is put in service safely.
+                                I hereby return the permit for cancellation.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <table>
+                                    <tr>
+                                        <td style="font-size: 7px; width: 150px;"><b>Name:</b> @Model.TpeName</td>
+                                        <td style="font-size: 7px; width: 150px;"><b>Designation:</b> @Model.TpeDesignation</td>
+                                        <td style="font-size: 7px; width: 150px;"><b>Sign:</b> @Model.TpeSign</td>
+                                        <td style="font-size: 7px; width: 150px;"><b>Contact No:</b> @Model.TpeContactNo</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="section-title">7. Conduct Natural Gas Test – Atmosphere Monitoring as follows</td>
+                <td colspan="3"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3">
+                    <table class="inner-table gas-table">
+                        <tr>
+                            <th rowspan="2" style="width: 90px;">Safe Limit of Natural Gas</th>
+                            <th colspan="11"><b>Readings of Natural Gas Detector</b> (1st Reading to be taken before start of activity and there after every 15 mins interval)</th>
+                        </tr>
+                        <tr>
+                            <td>Location of Reading</td>
+                            <td>@Model.Lor1</td>
+                            <td>@Model.Lor2</td>
+                            <td>@Model.Lor3</td>
+                            <td>@Model.Lor4</td>
+                            <td>@Model.Lor5</td>
+                            <td>@Model.Lor6</td>
+                            <td>@Model.Lor7</td>
+                            <td>@Model.Lor8</td>
+                            <td>@Model.Lor9</td>
+                            <td>@Model.Lor10</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">0 % Lower Explosive Level (LEL)</td>
+                            <td>Time of Reading</td>
+                            <td>@Model.Tor1</td>
+                            <td>@Model.Tor2</td>
+                            <td>@Model.Tor3</td>
+                            <td>@Model.Tor4</td>
+                            <td>@Model.Tor5</td>
+                            <td>@Model.Tor6</td>
+                            <td>@Model.Tor7</td>
+                            <td>@Model.Tor8</td>
+                            <td>@Model.Tor9</td>
+                            <td>@Model.Tor10</td>
+                        </tr>
+                        <tr>
+                            <td>Reading in %</td>
+                            <td style="text-align:right;">@Model.R1</td>
+                            <td style="text-align:right;">@Model.R2</td>
+                            <td style="text-align:right;">@Model.R3</td>
+                            <td style="text-align:right;">@Model.R4</td>
+                            <td style="text-align:right;">@Model.R5</td>
+                            <td style="text-align:right;">@Model.R6</td>
+                            <td style="text-align:right;">@Model.R7</td>
+                            <td style="text-align:right;">@Model.R8</td>
+                            <td style="text-align:right;">@Model.R9</td>
+                            <td style="text-align:right;">@Model.R10</td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan="3"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="font-size: 9px;"><b>8. Authorized Signatory (EIC/TPE)</b></td>
+                <td colspan="3" style="font-size: 9px;"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="font-size: 9px;">
+                    <table style="font-size: 7px; width: 600px; border: 1px solid black; border-collapse: collapse;">
+                        <tr>
+                            <td style="font-size: 7px; width: 600px;">
+                                I certify that the following apparatus/equipment has been made dead and isolated in order to perform maintenance activity in accordance with the safety rules and regulations.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 9px; width: 600px;">
+                                <table>
+                                    <tr>
+                                        <td style="font-size: 7px; width: 150px;"><b>Name: </b>@Model.AuthName</td>
+                                        <td style="font-size: 7px; width: 150px;"><b>Designation: </b>@Model.AuthDesignation</td>
+                                        <td style="font-size: 7px; width: 150px;"><b>Sign: </b>@Model.AuthSign</td>
+                                        <td style="font-size: 7px; width: 150px;"><b>Contact No: </b>@Model.AuthContactNo</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan="3" style="font-size: 9px;"></td>
+            </tr>
+
+        </table>
+    </div>
+</body>
+</html>

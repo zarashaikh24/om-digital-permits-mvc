@@ -1,0 +1,482 @@
+﻿@model CleanValveManagement.Models.CngElectricalPermitPrintModel
+
+@{
+    Layout = null;
+
+    string Display(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? "" : value;
+    }
+
+    string DisplayDate(DateTime? value)
+    {
+        return value.HasValue ? value.Value.ToString("dd-MM-yyyy") : "";
+    }
+
+    string Tick(string? value)
+    {
+        var v = (value ?? "").Trim().ToLower();
+        return v == "1" || v == "true" || v == "yes" || v == "y" ? "✓" : "";
+    }
+
+    string ApparatusTick(string apparatus)
+    {
+        var item = Model.ApparatusList?.FirstOrDefault(x =>
+            x.Apparatus != null &&
+            x.Apparatus.Equals(apparatus, StringComparison.OrdinalIgnoreCase));
+
+        if (item == null)
+            return "";
+
+        return !string.IsNullOrWhiteSpace(item.Lock) ? "✓" : "";
+    }
+
+    string ApparatusLock(string apparatus)
+    {
+        var item = Model.ApparatusList?.FirstOrDefault(x =>
+            string.Equals(x.Apparatus, apparatus, StringComparison.OrdinalIgnoreCase));
+
+        return item?.Lock ?? "";
+    }
+
+    string ApparatusTag(string apparatus)
+    {
+        var item = Model.ApparatusList?.FirstOrDefault(x =>
+            string.Equals(x.Apparatus, apparatus, StringComparison.OrdinalIgnoreCase));
+
+        return item?.Tag ?? "";
+    }
+
+    string ApparatusRemarks(string apparatus)
+    {
+        var item = Model.ApparatusList?.FirstOrDefault(x =>
+            string.Equals(x.Apparatus, apparatus, StringComparison.OrdinalIgnoreCase));
+
+        return item?.Remarks ?? "";
+    }
+
+    string PermitNoText = Model.PermitNo == 0 ? "" : Model.PermitNo.ToString();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>CNG Electrical Permit Print</title>
+
+    <style>
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 07px 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 14px;
+        }
+
+        h3 {
+            font-size: 11px;
+        }
+
+        .printable {
+            padding: 5px 5px 5px 5px;
+        }
+
+        .GridHeader,
+        .GridItem,
+        .GridAltItem {
+            font-size: 10px;
+            font-family: Calibri;
+        }
+
+        .auto-style1 {
+            width: 192px;
+            height: 65px;
+        }
+
+        .auto-style2 {
+            height: 16px;
+        }
+
+        .auto-style3 {
+            height: 15px;
+        }
+
+        .auto-style4 {
+            width: 200px;
+            height: 65px;
+        }
+
+        .auto-style5 {
+            width: 400px;
+            height: 65px;
+        }
+
+        @@media print {
+            .button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    @* <button class="button" type="button" onclick="window.print()">Print</button> *@
+
+    <table id="tableHeader" style="width: 1200px; font-family: Calibri; font-size: 10px; border: 1px solid black;">
+        <tr>
+            <td class="auto-style1"></td>
+
+            <td class="auto-style4">
+                <img src="@Url.Content("~/images/mgl-logo.png")" style="height: 60px; width: 125px" />
+            </td>
+
+            <td style="text-align: center;" colspan="2" class="auto-style5">
+                <h2>MAHANAGAR GAS LTD.</h2>
+                <h3><b>Permit to Work for Electrical work (OHS-R-14)</b></h3>
+            </td>
+
+            <td class="auto-style4">
+                <h3><b>OHS-R-14</b></h3>
+                <h3><b>Permit No: @PermitNoText</b></h3>
+            </td>
+
+            <td class="auto-style4"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;"><b>1. Site Details</b></td>
+            <td colspan="3" style="font-size: 10px;"><b>5. Transfer of Permit</b></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                <table>
+                    <tr>
+                        <td style="font-size: 10px; width: 200px;">
+                            <b>Date of issue:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                            @DisplayDate(Model.SiteDate)
+                        </td>
+
+                        <td style="font-size: 10px; width: 200px;">
+                            <b>Site Name:</b> @Display(Model.SiteName)
+                        </td>
+
+                        <td style="font-size: 10px; width: 200px;">
+                            <b>Site Location:</b> @Display(Model.Location)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            <td colspan="3" style="font-size: 10px;">
+                I have transferred this permit to ……………………………………………………………………………… Who now will be responsible for carrying out all the works mentioned.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                2. Work to be carried out (any live testing or live fault diagnosis, if any, to be specifically mentioned): Note: Please specify voltage level
+            </td>
+
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px;">
+                    <tr>
+                        <td style="font-size: 10px;"><b>Signature of the person transferring the permit</b> </td>
+                        <td style="font-size: 10px;"><b>Signature of the person receiving the Permit</b> </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 10px;"><b>Name:</b> </td>
+                        <td style="font-size: 10px;"><b>Name:</b> </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 10px; width: 300px;"><b>Designation:</b> </td>
+                        <td style="font-size: 10px; width: 300px;"><b>Designation:</b> </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" rowspan="2" style="font-size: 10px; padding-bottom: 2px;">
+                <u>@Display(Model.NatureOfWork)</u>
+            </td>
+
+            <td colspan="3" style="font-size: 10px;">
+                <b>6. Return and cancellation of Permit:</b>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;" class="auto-style2">
+                I confirm that the work specified has been completed successfully and installation is put in service safely.
+                I hereby return the permit for cancellation.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                3. For the purpose of making the above apparatus dead, the following switches/isolators/links/fuses have been opened and section is isolated at each isolation point and danger notice plates displayed thereon:
+            </td>
+
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px;">
+                    <tr>
+                        <td style="font-size: 10px; width:300px;">
+                            <b>Signature of the person returning the permit</b> @Display(Model.ClosurePerson?.Signature)
+                        </td>
+                        <td style="font-size: 10px; width:300px;">
+                            <b>Signature of the person canceling the Permit</b> @Display(Model.ClosurePerson?.Signature)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="font-size: 10px; width:300px;">
+                            <b>Name:</b> @Display(Model.ClosurePerson?.Name)
+                        </td>
+
+                        <td style="font-size: 10px; width:300px;">
+                            <b>Name:</b> @Display(Model.ClosurePerson?.Name)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="font-size: 10px; width:300px;">
+                            <b>Designation:</b> @Display(Model.ClosurePerson?.Designation)
+                        </td>
+
+                        <td style="font-size: 10px; width:300px;">
+                            <b>Designation:</b> @Display(Model.ClosurePerson?.Designation)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;"><b>Apparatus:</b></td>
+            <td colspan="3" style="font-size: 10px; padding-bottom: 2px;">
+                __________________________________________________________________________________________________________________________________________________
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px; padding-top: 0px;">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid black; width: 80px;">Switch</th>
+
+                        <th style="border: 1px solid black; width: 80px; text-align:center;">
+                            @ApparatusTick("Switch")
+                        </th>
+
+                        <th style="border: 1px solid black; width: 80px;">Lock</th>
+
+                        <th style="border: 1px solid black; width: 80px; text-align:center;">
+                            @ApparatusLock("Switch")
+                        </th>
+
+                        <th style="border: 1px solid black; width: 80px;">Tag</th>
+
+                        <th style="border: 1px solid black; width: 80px; text-align:center;">
+                            @ApparatusTag("Switch")
+                        </th>
+
+                        <th style="border: 1px solid black; width: 80px;">Remarks</th>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">Isolator</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusTick("Isolator")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">Lock</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusLock("Isolator")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">Tag</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusTag("Isolator")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusRemarks("Isolator")</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">Fuses</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusTick("Fuses")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">Lock</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusLock("Fuses")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">Tag</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusTag("Fuses")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusRemarks("Fuses")</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">Other (Pl. specify)</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusTick("Other")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">Lock</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusLock("Other")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">Tag</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusTag("Other")</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">@ApparatusRemarks("Other")</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">
+                            Voltage level (post isolation – to be measured only with LT 230V/415VAC)
+                        </td>
+
+                        <td colspan="2" style="border: 1px solid black; padding: 5px; text-align: center;">
+                            @Display(Model.VoltageLevel)
+                        </td>
+
+                        <td style="border: 1px solid black;"></td>
+
+                        <td colspan="2" style="border: 1px solid black; padding: 5px; text-align: center;">
+                            Key safe No. of Lock (At CGS only)
+                        </td>
+
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">
+                            @Display(Model.KeySafe)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            <td colspan="3" rowspan="3" style="font-size: 10px; padding-top: 0px;">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr><td colspan="3" style="font-size: 10px;"><b>Notes:</b></td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">1. All work on major electrical installations shall be carried out under permit – to work system unless standing instructions are issued by competent authority to follow other procedures.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">2. The person-in charges operations (permit issuing authority) shall ensure that an installation where work is to be carried out is rendered dead and safe for working</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">3. Person In Charges (Issuing) shall mention the lock no., tag no. and key safe no. (for CGS).</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">4. All work shall be carried out under the personal supervision of a competent person.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">5. No work shall be commenced on live mains/bus bars/switchgear unless it is specially intended to be so done by specially trained staff. In such cases all possible precautions shall be taken to ensure safety of the staff engaged for such work and also of other who may be directly or indirectly connected with the work.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">6. On completion of the work for which the permit-to-work is issued, the person in charge of maintenance staff should return the permit duly discharged to the issuing authority.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">7. Unless a person is authorized to work on live apparatus or mains, all apparatus and mains to be worked upon shall be isolated from all sources before starting the work, proved dead.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">8. Warning boards shall be displayed on or adjacent to the live apparatus and at the limits of the zone in which work may be carried out.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">9. Under no circumstances shall be person work with unsound gauntlets, mats, stools, platforms or other accessories and safety devices.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">10. All mains and apparatus shall be regarded as live and a source of danger and treated accordingly, unless it is positively known to be dead.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">11. No live part should be within unsafe distance of a person working on live mains so that he does not come in contact with it unless he is properly protected.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">12. The operations of proving dead shall be carried out by an authorized person.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">13. The permit to be prepared in duplicate by person in charge of operation/maintenance.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">14. Permit books should be treated as important records. All the sheets in the permit books and books themselves shall be serially numbered.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">15. Permit books shall be kept only with the person-in-charge of operation who shall maintain a record of the receipts and issued made by him.</td></tr>
+                    <tr><td colspan="3" style="font-size: 10px;">16. Insulated rubber gloves maximum usage:</td></tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                Availability of PPEs and fire fighting equipments: (Mark a tick in column)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px; padding-top: 0px;">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px; text-align: center;">Electrical safety shoes</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px; text-align: center;">@Tick(Model.ESSPresent)</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px; text-align: center;">Insulated tools</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">@Tick(Model.ITPresent)</th>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">Electrical gloves</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">@Tick(Model.EGPresent)</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;">Fire Extinguishers (CO2 type)</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">@Tick(Model.FEPresent)</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: left;" colspan="4">
+                            Other PPEs as per MGL guidelines: @Display(Model.OtherPPEs)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                4. This permit is now being issued to
+                <u>@Display(Model.ReceivingPerson?.Name)</u>
+                (Name of the person to whom permit is being issued to).&nbsp; I certify that the apparatus/equipment has been made dead, is isolated from all live
+                conductors (and connected to earth wherever possible) and the work mentioned above can now be carried out in accordance with the safety rules and regulations.)
+            </td>
+
+            <td colspan="3" rowspan="6" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Sr.No.</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Class</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Max. Use voltage (AC/DC)</th>
+                    </tr>
+                    <tr><td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">1</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">00</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">500/750</td></tr>
+                    <tr><td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">2</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">0</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">1000/1500</td></tr>
+                    <tr><td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">3</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">1</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">7500/11250</td></tr>
+                    <tr><td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">4</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">2</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">17,000/25,500</td></tr>
+                    <tr><td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">5</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">3</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">26,500/39,750</td></tr>
+                    <tr><td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center;">6</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">4</td><td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center;">36,000/54,000</td></tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 10px;" class="auto-style3"></td>
+            <td style="font-size: 10px; width:300px;" class="auto-style3">
+                <b>Signature of permit issuing authority</b> @Display(Model.IssuingAuthority?.Signature)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 10px;"></td>
+            <td style="font-size: 10px; width:300px;">
+                <b>Name:</b> @Display(Model.IssuingAuthority?.Name)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 10px;"></td>
+            <td style="font-size: 10px; width:300px;">
+                <b>Designation:</b> @Display(Model.IssuingAuthority?.Designation)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                Department (receiving the permit) _______________________________________________I have been placed in direct and continuous charge of work mentioned and accept the responsibility of carrying out the said work taking all necessary safety precautions to avoid danger and no attempt will be made either by me or the men under my control to carry out any other work on any other apparatus other than any mentioned herewith.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 10px;" class="auto-style3"></td>
+            <td style="font-size: 10px; width:300px;" class="auto-style3">
+                <b>
+                    Signature of the person receiving the permit &
+                    Responsible for carrying out the above work
+                </b>
+                @Display(Model.ReceivingPerson?.Signature)
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 10px;"></td>
+            <td style="font-size: 10px; width:300px;">
+                <b>Name:</b> @Display(Model.ReceivingPerson?.Name)
+            </td>
+            <td colspan="3" style="font-size: 10px;"></td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 10px;"></td>
+            <td style="font-size: 10px; width:300px;">
+                <b>Designation:</b> @Display(Model.ReceivingPerson?.Designation)
+            </td>
+            <td colspan="3" style="font-size: 10px;"></td>
+        </tr>
+    </table>
+</body>

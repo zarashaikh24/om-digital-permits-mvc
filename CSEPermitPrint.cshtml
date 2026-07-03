@@ -1,0 +1,400 @@
+﻿@model CleanValveManagement.Models.CSEPermitPrintModel
+
+@{
+    Layout = null;
+
+    string Display(string? v) => string.IsNullOrWhiteSpace(v) ? "" : v;
+    string DisplayDate(DateTime? v) => v.HasValue ? v.Value.ToString("dd-MM-yyyy") : "";
+    string DisplayDateTime(DateTime? v) => v.HasValue ? v.Value.ToString("dd-MM-yyyy HH:mm:ss") : "";
+
+    string Tick(int sr, string opt)
+    {
+        var item = Model.ChecklistItems.FirstOrDefault(x => x.SrNo == sr);
+        return string.Equals(item?.Answer, opt, StringComparison.OrdinalIgnoreCase) ? "✓" : "";
+    }
+
+    string Remark(int sr)
+    {
+        var item = Model.ChecklistItems.FirstOrDefault(x => x.SrNo == sr);
+        return item?.Remark ?? "";
+    }
+
+    string PermitNoText = Model.PermitNo == 0 ? "" : Model.PermitNo.ToString();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        h2 { font-size: 13px; }
+        h3 { font-size: 11px; }
+
+        .auto-style1 { width: 192px; }
+        .auto-style2 { width: 500px; }
+        .auto-style3 { width: 30px; height: 10px; }
+        .auto-style4 { width: 500px; height: 10px; }
+        .auto-style5 { width: 39px; height: 10px; }
+        .auto-style6 { width: 60px; height: 10px; }
+        .auto-style9 { width: 50px; height: 10px; }
+        .auto-style10 { width: 200px; height: 10px; }
+        .auto-style11 { width: 150px; height: 10px; }
+        .auto-style12 { width: 150px; }
+    </style>
+</head>
+
+<body>
+    <table id="tableHeader" style="width: 800px; font-family: Calibri; font-size: 8px;">
+        <tr>
+            <td style="width: 200px;"></td>
+            <td style="width: 200px;"></td>
+            <td style="width: 260px;"></td>
+            <td style="width: 140px;"></td>
+            <td style="width: 200px;"></td>
+        </tr>
+
+        <tr>
+            <td class="auto-style1" rowspan="3">
+                <img src="@Url.Content("~/images/mgl-logo.png")" style="height: 65px; width: 160px; text-align: center;" />
+            </td>
+
+            <td style="width: 600px; text-align: center;" colspan="3">
+                <h2>MAHANAGAR GAS LTD</h2>
+                <h3><b>CONFINED SPACE ENTRY WORK PERMIT</b></h3>
+            </td>
+
+            <td style="width: 200px;">
+                <h3><b>PECRE031/Rev.01</b></h3>
+                <h3><b>Permit No: @PermitNoText</b></h3>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 11px; text-align: center;">
+                <b>(Applicable for Nallah Crossing, Water Tanks and Steel Valve Chamber Entry)</b>
+            </td>
+            <td style="width: 200px; font-size: 11px;">
+                <b>Print Date:&nbsp;&nbsp; @DisplayDate(Model.PrintDate)</b>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 11px; text-align: center;">
+                <b>&nbsp;CROSS REFERENCE NUMBER OF SIMOPS / OTHER PERMITS / MOC / NRO TAKEN, IF </b> 
+                <div>
+                   <b> ANY:</b> @(string.IsNullOrWhiteSpace(Model.CrossReference) ? "___________" : Model.CrossReference)
+                </div>
+            </td>
+
+            <td style="width: 200px; font-size: 11px;">
+                <b>@Display(Model.ContractorName)</b>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="font-size: 13px; font-weight: bold;">Site: @Display(Model.SiteName)</td>
+            <td colspan="2" style="font-size: 13px; font-weight: bold;">Location: @Display(Model.Location)</td>
+            <td style="font-size: 13px; font-weight: bold;">Start Date: @DisplayDate(Model.StartDate)</td>
+        </tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 9px; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid black; width: 30px; height: 10px;">Sr.No</th>
+                        <th style="border: 1px solid black;" class="auto-style2">Description</th>
+                        <th style="border: 1px solid black;">Yes</th>
+                        <th style="border: 1px solid black;">No</th>
+                        <th style="border: 1px solid black;">NA</th>
+                        <th style="border: 1px solid black;">Remark</th>
+                    </tr>
+
+                    @{
+                        var items = new[]
+                        {
+                            new {No=1, Text="Is the team properly trained and qualified to proceed the activity with valid STC card?"},
+                            new {No=2, Text="Briefed by MGL Site In-charge regarding the job & precaution required and MGL life saver on confined space entry and recorded in Tool Box Talk"}
+                        };
+                    }
+
+                    @foreach (var x in items)
+                    {
+                        <tr>
+                            <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px; height: 10px;">@x.No.</td>
+                            <td style="border: 1px solid black; padding: 8px;" class="auto-style2">@x.Text</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "Yes")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "No")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "NA")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 60px;">@Remark(x.No)</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 11px; text-align: left; padding-left: 10px;"><b>&nbsp;Atmosphere/Gas monitoring Equipment (Gascoseeker/02 Meter)</b></td></tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 9px; border: 1px solid black; border-collapse: collapse;">
+                    @{
+                        var items2 = new[]
+                        {
+                            new {No=3, Text="Is the Gascoseekar in working condition & within calibration due dates?"},
+                            new {No=4, Text="Is the Oxygen meter in working condition & within calibration due dates?"}
+                        };
+                    }
+
+                    @foreach (var x in items2)
+                    {
+                        <tr>
+                            <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px; height: 10px;">@x.No.</td>
+                            <td style="border: 1px solid black; padding: 8px;" class="auto-style2">@x.Text</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "Yes")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "No")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "NA")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 60px;">@Remark(x.No)</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 11px; text-align: left; padding-left: 10px;"><b>&nbsp;Air Blower</b></td></tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 9px; border: 1px solid black; border-collapse: collapse;">
+                    @{
+                        var items3 = new[]
+                        {
+                            new {No=5, Text="Is air blower available as per Site HIRA to supply fresh air?"},
+                            new {No=6, Text="Is the lid of valve chamber open & kept open for more than 10 min before entering?"}
+                        };
+                    }
+
+                    @foreach (var x in items3)
+                    {
+                        <tr>
+                            <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px; height: 10px;">@x.No.</td>
+                            <td style="border: 1px solid black; padding: 8px;" class="auto-style2">@x.Text</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "Yes")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "No")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "NA")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 60px;">@Remark(x.No)</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 11px; text-align: left; padding-left: 10px;"><b>&nbsp;Rescue Equipment</b></td></tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 9px; border: 1px solid black; border-collapse: collapse;">
+                    @{
+                        var items4 = new[]
+                        {
+                            new {No=7, Text="Is ladder/tripod provided for the person entering the confined space?"},
+                            new {No=8, Text="Is rope or hooks ready to use and in good condition (without knots, oil, amendments, untwisted) for lifting valve chamber covers?"},
+                            new {No=9, Text="Is person entering in the confined space wearing double lanyard full body harness with lifeline attached to permanent structure?"},
+                            new {No=10, Text="Rescuer must enter in confined space with breathing apparatus or escape set."},
+                            new {No=11, Text="Is proper trench support i.e. shoring / shuttering / bottom support provided in case of nallah crossing."}
+                        };
+                    }
+
+                    @foreach (var x in items4)
+                    {
+                        <tr>
+                            <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px; height: 10px;">@x.No.</td>
+                            <td style="border: 1px solid black; padding: 8px;" class="auto-style2">@x.Text</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "Yes")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "No")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "NA")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 60px;">@Remark(x.No)</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 11px; text-align: left; padding-left: 10px;"><b>&nbsp;Fire Extinguisher / First aid / PPEs / Others</b></td></tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 9px; border: 1px solid black; border-collapse: collapse;">
+                    @{
+                        var items5 = new[]
+                        {
+                            new {No=12, Text="Is 10 kg DCP fire extinguisher, made available at site is in good condition within all due dates?"},
+                            new {No=13, Text="Is all the applicable PPE worn by the personnel at site?"},
+                            new {No=14, Text="Breathing apparatus must be worn by the person entering the confined space if O2 level goes below 18% v/v."},
+                            new {No=15, Text="Is the first aid box made available at site with all medicines & list of medicines in it?"},
+                            new {No=16, Text="Cleaning is carried out & proper lighting is provided prior to entry inside the confined space."}
+                        };
+                    }
+
+                    @foreach (var x in items5)
+                    {
+                        <tr>
+                            <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px; height: 10px;">@x.No.</td>
+                            <td style="border: 1px solid black; padding: 8px;" class="auto-style2">@x.Text</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "Yes")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "No")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 39px; text-align:center;">@Tick(x.No, "NA")</td>
+                            <td style="border: 1px solid black; padding: 8px; width: 60px;">@Remark(x.No)</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+
+       <tr>
+        <tr>
+            <td colspan="5" style="font-size:10px;text-align:left;padding-left:10px;">
+                &nbsp;1) Authorization: MGL site in-charge will be the authorizing person for confined space entry.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width:800px;font-family:Calibri;font-size:8px;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <th style="border:1px solid black;width:80px;">Time</th>
+                        <th style="border:1px solid black;width:200px;">1st Signatory</th>
+                        <th style="border:1px solid black;width:150px;">Designation</th>
+                        <th style="border:1px solid black;width:150px;">Contact Number</th>
+                        <th style="border:1px solid black;">Signature</th>
+                    </tr>
+                    <tr style="height:35px;">
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@DisplayDateTime(Model.FirstSignatory.TimeSigned)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.FirstSignatory.Name)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.FirstSignatory.Designation)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.FirstSignatory.ContactNo)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.FirstSignatory.Signature)</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="5" style="font-size:10px;text-align:left;padding-left:10px;">
+                &nbsp;2) Competent person at site: In case of Nallah crossing and tank cleaning, the competent person at site will be TPE. In case of Steel valve chamber entry, competent person will be MGL Technician or contractor representative (Engg./Sup.).
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width:800px;font-family:Calibri;font-size:8px;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <th style="border:1px solid black;width:80px;">Time</th>
+                        <th style="border:1px solid black;width:200px;">2nd Signatory</th>
+                        <th style="border:1px solid black;width:150px;">Designation</th>
+                        <th style="border:1px solid black;width:150px;">Contact Number</th>
+                        <th style="border:1px solid black;">Signature</th>
+                    </tr>
+                    <tr style="height:35px;">
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@DisplayDateTime(Model.SecondSignatory.TimeSigned)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.SecondSignatory.Name)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.SecondSignatory.Designation)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.SecondSignatory.ContactNo)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.SecondSignatory.Signature)</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="5" style="font-size:10px;text-align:left;padding-left:10px;">
+                &nbsp;3) Completion of work: to be filled by the competent person.
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width:800px;font-family:Calibri;font-size:8px;border:1px solid black;border-collapse:collapse;">
+                    <tr>
+                        <th style="border:1px solid black;width:80px;">Time</th>
+                        <th style="border:1px solid black;width:200px;">3rd Signatory</th>
+                        <th style="border:1px solid black;width:150px;">Designation</th>
+                        <th style="border:1px solid black;width:150px;">Contact Number</th>
+                        <th style="border:1px solid black;">Signature</th>
+                    </tr>
+                    <tr style="height:35px;">
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@DisplayDateTime(Model.ThirdSignatory.TimeSigned)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.ThirdSignatory.Name)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.ThirdSignatory.Designation)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.ThirdSignatory.ContactNo)</td>
+                        <td style="border:1px solid black;padding:8px;text-align:center;vertical-align:middle;">@Display(Model.ThirdSignatory.Signature)</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 10px; text-align: left; padding-left: 10px;">&nbsp;4) Atmosphere Monitoring date:</td></tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 8px; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <th rowspan="2" style="border: 1px solid black;">Description</th>
+                        <th rowspan="2" style="border: 1px solid black;">Test required</th>
+                        <th rowspan="2" style="border: 1px solid black;">Safe limit</th>
+                        <th colspan="8" style="border: 1px solid black;">Actual Reading to be taken in every 30 mins interval.</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 8px;">0</td>
+                        <td style="border: 1px solid black; padding: 8px;">1</td>
+                        <td style="border: 1px solid black; padding: 8px;">2</td>
+                        <td style="border: 1px solid black; padding: 8px;">3</td>
+                        <td style="border: 1px solid black; padding: 8px;">4</td>
+                        <td style="border: 1px solid black; padding: 8px;">5</td>
+                        <td style="border: 1px solid black; padding: 8px;">6</td>
+                        <td style="border: 1px solid black; padding: 8px;">7</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 8px;">Oxygen</td>
+                        <td style="border: 1px solid black; padding: 8px; text-align:center;">@Display(Model.Atmosphere.OxygenRequired)</td>
+                        <td style="border: 1px solid black; padding: 8px;">Without respiratory protection( 20 to max 21.5)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O0)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O1)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O2)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O3)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O4)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O5)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O6)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.O7)</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 8px;">Natural Gas</td>
+                        <td style="border: 1px solid black; padding: 8px; text-align:center;">@Display(Model.Atmosphere.NaturalGasRequired)</td>
+                        <td style="border: 1px solid black; padding: 8px;">≤ 50 PPM</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N0)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N1)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N2)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N3)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N4)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N5)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N6)</td>
+                        <td style="border: 1px solid black; padding: 8px;">@Display(Model.Atmosphere.N7)</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 10px; text-align: left; padding-left: 10px;">&nbsp;5) Entry into any confined space cannot proceed unless</td></tr>
+
+        <tr>
+            <td colspan="5">
+                <table style="width: 800px; font-family: Calibri; font-size: 8px;">
+                    <tr><td colspan="5" style="font-size: 9px; text-align: left; padding-left: 30px;">&nbsp;a. All other options have been ruled out.&nbsp;&nbsp; b. Valid CSE Permit is issued by a responsible person (s) and communicated to all affected personnel and posted, as required.</td></tr>
+                    <tr><td colspan="5" style="font-size: 9px; text-align: left; padding-left: 30px;">&nbsp;c. Secure lines of communication are established.&nbsp;&nbsp;d. All sources of energy affecting the space have been isolated.</td></tr>
+                    <tr><td colspan="5" style="font-size: 9px; text-align: left; padding-left: 30px;">&nbsp;e. Testing of atmospheres is conducted / verified and repeated as defined in the Hazard Identification and Risk Assessment.&nbsp;&nbsp;f. Stand-by person is stationed.</td></tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="5" style="font-size: 10px; text-align: left; padding-left: 10px;">&nbsp;6) This permit is valid only for that date only.</td></tr>
+    </table>
+</body>
+</html>

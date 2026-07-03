@@ -1,0 +1,27 @@
+﻿# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# Logs
+*.log
+
+# Environment
+.env
+
+# Publish
+publish/
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# App settings (optional)
+appsettings.Development.json

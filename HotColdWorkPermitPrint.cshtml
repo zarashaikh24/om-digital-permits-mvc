@@ -1,0 +1,506 @@
+﻿@model CleanValveManagement.Models.HotColdWorkPermitModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 07px 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 14px;
+        }
+
+        h3 {
+            font-size: 11px;
+        }
+
+        .printable {
+            padding: 5px 5px 5px 5px;
+        }
+
+        .GridHeader {
+            font-size: 8px;
+            font-family: Calibri;
+        }
+
+        .GridItem {
+            font-size: 7px;
+            font-family: Calibri;
+        }
+
+        .GridAltItem {
+            font-size: 7px;
+            font-family: Calibri;
+        }
+
+        .auto-style1 {
+            width: 192px;
+        }
+
+        .auto-style11 {
+            height: 15px;
+        }
+
+        .auto-style12 {
+            height: 165px;
+        }
+
+        .auto-style13 {
+            width: 300px;
+            height: 13px;
+        }
+
+        .auto-style16 {
+            width: 300px;
+            height: 15px;
+        }
+
+        .auto-style17 {
+            width: 300px;
+            height: 17px;
+        }
+    </style>
+</head>
+<body>
+    <table id="tableHeader" style="width: 1200px; font-family: Calibri; font-size: 7px; border: 1px solid black;">
+        <tr>
+            <td class="auto-style1"></td>
+            <td style="width: 200px;">
+                <img src="@Url.Content("~/images/mgl-logo.png")" style="height: 40px; width: 105px" />
+            </td>
+            <td style="width: 400px; text-align: center;" colspan="2">
+                <h2>MAHANAGAR GAS LTD.</h2>
+                <h3><b>Permit to Work for Hot work / Cold work</b></h3>
+            </td>
+            <td style="width: 200px;">
+                <h3><b>HSE–R–12</b></h3>
+                <h3><b>Permit No: @Model.PermitNo</b></h3>
+            </td>
+            <td style="width: 200px;">
+                <h3></h3>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                <b>* Hot work – Gas cutting, welding and grinding on live or decommissioned plant.</b><br />
+                <b>* Cold work – Working near live steel network or work in plant containing hazardous material.</b> <br />
+            </td>
+            <td colspan="3" rowspan="2" style="font-size: 10px;">
+                <b>8. AUTHORISATION (Engineer)</b><br />
+                I certify that the site has been examined and satisfied that the work specified can be carried out subject to compliance with the hazard mitigation measures and site conditions as mentioned above. This permit is issued to <u>@Model.SiteSupervisorName</u>.(Name of the Site supervisor) and valid from <u>@Model.AStartDate</u> to <u>@Model.AEndDate</u>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;"><b>1. SITE DETAILS(Engineer)</b></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;" class="auto-style11">
+                <b>Site location</b> @Model.SiteLocation
+            </td>
+            <td colspan="3" style="font-size: 10px;" class="auto-style11"><b>Authorizing Person</b></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                <b>Nature of work</b> @Model.NatureOfWork
+            </td>
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <td style="font-size: 10px; width: 300px;">Name: @Model.AEngineerName</td>
+                        <td style="font-size: 10px; width: 300px;">Designation: @Model.ADesignation</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;"><b>2. HAZARD IDENTIFICATION AND ISOLATION</b></td>
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <td style="font-size: 10px; width: 300px;">Signature: @Model.ASignature</td>
+                        <td style="font-size: 10px; width: 300px;">Telephone: @Model.ATelephone</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px; padding-top: 0px;" class="auto-style12">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Hazard Identification</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Hazard Details</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Hazard exists(Yes/No)</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Hazard isolated(Yes/No)</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Hazard Mitigation Measures</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Lock No.</th>
+                        <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Tag No.</th>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 80px;">Mechanical Power</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.MP_HD</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.MP_HE</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.MP_HI</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.MP_HMM</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.MP_Lock</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.MP_Tag</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 80px;">Pressurized Gases</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.PG_HD</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.PG_HE</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.PG_HI</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.PG_HMM</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.PG_Lock</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.PG_Tag</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 80px;">Remotely operable equipment</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.ROE_HD</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.ROE_HE</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.ROE_HI</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.ROE_HMM</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.ROE_Lock</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.ROE_Tag</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 80px;">Electricity</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Elec_HD</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Elec_HE</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Elec_HI</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Elec_HMM</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Elec_Lock</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Elec_Tag</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 80px;">Confined Space Entry</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.CSE_HD</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.CSE_HE</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.CSE_HI</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.CSE_HMM</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.CSE_Lock</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.CSE_Tag</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 80px;">Others, if any</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Other_HD</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Other_HE</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Other_HI</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Other_HMM</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Other_Lock</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; text-align: center; width: 80px;">@Model.Other_Tag</td>
+                    </tr>
+                </table>
+            </td>
+
+            <td colspan="3" style="font-size: 10px; padding-top: 0px;" class="auto-style12">
+                <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <td style="font-size: 10px; width: 600px;"><b>9. Permit acceptance (Site Supervisor) </b></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 10px; width: 600px;">I have understood the above requirement and the necessary precautions have been compiled by me. I have been placed in direct and continuous charge of work mentioned above and accept the responsibility of carrying out the said work considering all the safety precaution in order to avoid any danger. I shall be available at the site for the entire duration of work.</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="font-size: 10px;">
+                            <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                                <tr>
+                                    <td style="font-size: 10px; width: 300px;">Signature: @Model.ASiteSupervisor</td>
+                                    <td style="font-size: 10px; width: 300px;">Designation: @Model.ASSDesignation</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="font-size: 10px;">
+                            <table style="font-size: 10px; width: 600px; border-collapse: collapse;">
+                                <tr>
+                                    <td style="font-size: 10px; width: 300px;">Name: @Model.ASSName</td>
+                                    <td style="font-size: 10px; width: 300px;">Contact No: @Model.ASSTelephone</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 10px; width: 600px;"><b>10. CONTINUATION OF WORK (Engineer)</b></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 10px; width: 600px;">I am satisfied that the work identified in Section 1 of the permit may be continued subject to compliance with the above conditions & satisfactory test results.</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="font-size: 10px;">
+                            <table style="font-size: 9px; width: 600px; border-collapse: collapse;">
+                                <tr>
+                                    <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 30px; height: 10px;">Sr.No</th>
+                                    <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px;">Date</th>
+                                    <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px; height: 10px;">Remarks</th>
+                                    <th style="border: 1px solid black; border-collapse: collapse; font: bold; width: 80px; height: 10px;">Authorizing person(Engineer)</th>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 30px; height: 10px;">1</td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 30px; height: 10px;">2</td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 2px; text-align: center; width: 30px; height: 10px;">3</td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                    <td style="border: 1px solid black; border-collapse: collapse; padding: 5px;"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="font-size: 10px;"><b>6. SITE CONDITION CHECKLIST</b></td>
+            <td colspan="3" style="font-size: 10px;"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 7px; width: 600px; border-collapse: collapse;">
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;"><b>1. Ensure all safety measures have been taken</b></td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox1)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;"><b>2. Extinguish source of ignition near work place</b></td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox2)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;"><b>3. Hand excavation</b></td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox3)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;"><b>4. Job procedure required (YES/NO)</b></td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox4)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;">
+                            <b>Procedure Ref. No</b>
+                            <u>@Model.ProcedureRefNo</u>
+                        </td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox5)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;"><b>5. Personal protective equipment is available</b></td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox6)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;"><b>6. Firefighting equipment is available.</b></td>
+                        <td style="font-size: 7px;">@Html.CheckBoxFor(m => m.CheckBox7)</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="font-size: 10px;">
+                            <b>7. Others please specify</b> @Model.OtherScc
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px;">
+
+                    <tr>
+                        <td colspan="3" style="font-size: 10px;">
+                            <b>11. TRANSFER OF PERMIT (Engineer)</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" style="font-size: 10px;">
+                            I have transferred this permit to …………………………………………………………………who will be responsible for carrying out all the works as mentioned in this permit.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" style="font-size: 10px;">
+                            <table style="font-size: 10px; width: 600px;">
+                                <tr>
+                                    <td class="auto-style17" style="font-size: 10px;">
+                                        <b>Person transferring the permit</b>
+                                    </td>
+
+                                    <td class="auto-style17" style="font-size: 10px;">
+                                        <b>Person receiving the Permit</b>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="auto-style13" style="font-size: 10px;">
+                                        Name:
+                                    </td>
+
+                                    <td class="auto-style13" style="font-size: 10px;">
+                                        Name:
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="font-size: 10px; width:300px;">
+                                        Designation:
+                                    </td>
+
+                                    <td style="font-size: 10px; width:300px;">
+                                        Designation:
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" class="auto-style16" style="font-size:10px;">
+                                        <b>12. WORK COMPLETED (Engineer)</b>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3" style="font-size:10px;">
+                                        I have inspected / tested the work covered by this permit & certify that the work has been completed safely.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3">
+                                        <table style="font-size:10px;width:600px;border-collapse:collapse;">
+                                            <tr>
+                                                <td style="width:300px;">
+                                                    Engineer: @Model.CEngineer
+                                                </td>
+
+                                                <td style="width:300px;">
+                                                    Designation: @Model.CDesignation
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3">
+                                        <table style="font-size:10px;width:600px;border-collapse:collapse;">
+                                            <tr>
+                                                <td style="width:300px;">
+                                                    Name: @Model.CName
+                                                </td>
+
+                                                <td style="width:300px;">
+                                                    Contact No: @Model.CTelephone
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="font-size:10px;">
+                <b>7. Conduct Natural Gas Test – Atmosphere Monitoring as follows</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="font-size: 10px;">
+                <table style="font-size: 10px; width: 600px; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <th rowspan="2" style="border: 1px solid black; border-collapse: collapse; font: bold; width: 90px; height: 10px;">Safe Limit of Natural Gas</th>
+                        <th colspan="11" style="border: 1px solid black; border-collapse: collapse; font: bold;" class="auto-style2"><b>Readings of Natural Gas Detector</b>(1st Reading to be taken before start of activity and there after every 15 mins interval)</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 60px; height: 10px;">Location of Reading</td>
+                        <td id="lor1" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor1</td>
+                        <td id="lor2" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor2</td>
+                        <td id="lor3" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor3</td>
+                        <td id="lor4" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor4</td>
+                        <td id="lor5" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor5</td>
+                        <td id="lor6" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor6</td>
+                        <td id="lor7" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor7</td>
+                        <td id="lor8" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor8</td>
+                        <td id="lor9" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor9</td>
+                        <td id="lor10" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Lor10</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 60px; height: 10px;">0 % Lower Explosive Level (LEL)</td>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 60px; height: 10px;">Time of Reading</td>
+                        <td id="tor1" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor1</td>
+                        <td id="tor2" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor2</td>
+                        <td id="tor3" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor3</td>
+                        <td id="tor4" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor4</td>
+                        <td id="tor5" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor5</td>
+                        <td id="tor6" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor6</td>
+                        <td id="tor7" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor7</td>
+                        <td id="tor8" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor8</td>
+                        <td id="tor9" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor9</td>
+                        <td id="tor10" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px;">@Model.Tor10</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 60px; height: 10px;">Reading in %</td>
+                        <td id="r1" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R1</td>
+                        <td id="r2" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R2</td>
+                        <td id="r3" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R3</td>
+                        <td id="r4" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R4</td>
+                        <td id="r5" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R5</td>
+                        <td id="r6" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R6</td>
+                        <td id="r7" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R7</td>
+                        <td id="r8" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R8</td>
+                        <td id="r9" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R9</td>
+                        <td id="r10" style="border: 1px solid black; border-collapse: collapse; padding: 5px; width: 30px; height: 10px; text-align: right;">@Model.R10</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="font-size: 10px;"></td>
+            <td colspan="3" style="font-size: 7px;"><b></b></td>
+        </tr>
+    </table>
+</body>
+</html>

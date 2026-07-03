@@ -1,0 +1,455 @@
+﻿@model CleanValveManagement.Models.CNGWAHPrintModel
+
+@{
+    Layout = null;
+}
+
+
+@functions {
+    public string YesMark(int qNo)
+    {
+        if (!Model.Responses.ContainsKey(qNo)) return "";
+
+        var res = Model.Responses[qNo]?.Trim().ToLower();
+
+        return (res == "yes" || res == "y" || res == "1" || res == "true")
+            ? "✓" : "";
+    }
+
+    public string NoMark(int qNo)
+    {
+        if (!Model.Responses.ContainsKey(qNo)) return "";
+
+        var res = Model.Responses[qNo]?.Trim().ToLower();
+
+        return (res == "no" || res == "n" || res == "0" || res == "false")
+            ? "✓" : "";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 08px 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 12px;
+        }
+
+        h3 {
+            font-size: 10px;
+        }
+
+        .printable {
+            padding: 5px 5px 5px 5px;
+        }
+
+        .GridHeader, .GridItem, .GridAltItem {
+            font-size: 8px;
+            font-family: Calibri;
+        }
+
+        .auto-style2 {
+            height: 10px;
+        }
+
+        .auto-style3 {
+            width: 150px;
+            height: 62px;
+        }
+
+        .auto-style4 {
+            width: 400px;
+            height: 62px;
+        }
+
+        .auto-style5 {
+            width: 100px;
+            height: 62px;
+        }
+
+        .auto-style6 {
+            width: 30px;
+            height: 10px;
+        }
+
+        .auto-style7 {
+            width: 39px;
+            height: 10px;
+        }
+
+        @@media print {
+            body {
+                margin: 0;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table id="tableHeader" style="width: 800px; font-family: Calibri; border-collapse: collapse; font-size: 8px;">
+        <tr>
+            <td class="auto-style2"></td>
+            <td class="auto-style3">
+                <img src="~/Images/mgl-logo.png" style="height: 60px; width: 88px; margin-left: 19px;" />
+            </td>
+
+            <td style="text-align: center;" colspan="2" class="auto-style4">
+                <h2>MAHANAGAR GAS LTD.</h2>
+                <h3><b>PERMIT TO WORK AT HEIGHT USING METAL SCAFFOLD, VERTICAL LIFT AND STEP LADDER</b></h3>
+            </td>
+
+            <td class="auto-style3">
+                <h3><b>HSERE017,Rev.01</b></h3>
+                <h3><b>Permit No: @Model.PermitNo</b></h3>
+            </td>
+
+            <td class="auto-style5">
+                <h3></h3>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="6" style="width: 800px; font-family: Calibri; border: 1px solid black; border-collapse: collapse; font-size: 10px;">
+                <b>This work permit is applicable for Work At Height activities above 2 meter height from ground level, below more than 2 meter depth from ground level and excluding work at height using Industrial Rope Access System. Use PECRE030 permit form for WAH using Industrial Rope Access System.</b>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="6" style="width: 800px; font-family: Calibri; border: 1px solid black; border-collapse: collapse; font-size: 8px;">
+                <table id="table1" style="width: 800px; font-family: Calibri; border: 1px solid black; border-collapse: collapse; font-size: 8px;">
+                    <tr>
+                        <td colspan="4" style="padding-top: 2px; font-size: 8px; border: 1px solid black;"><b>1. SITE DETAILS</b></td>
+                        <td colspan="2" style="padding-top: 2px; font-size: 8px; padding-left: 40px; border: 1px solid black;"><b>@Model.CName</b></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6" style="padding-top: 2px; font-size: 8px; border: 1px solid black;">
+                            <b>Activity</b>&nbsp;&nbsp;@Model.Activity
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="padding-top: 2px; font-size: 8px; border: 1px solid black; width: 90px;">
+                            <b>Date of issue:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @Model.Date</b>
+                        </td>
+                        <td colspan="2" style="padding-top: 2px; font-size: 8px; padding-left: 40px; border: 1px solid black; width: 75px;">
+                            <b>Time of Iisue:</b>&nbsp;&nbsp;@Model.TimeOfIssue
+                        </td>
+                        <td colspan="2" style="padding-top: 2px; font-size: 8px; padding-left: 40px; border: 1px solid black;">
+                            <b>Site Location:</b>&nbsp;&nbsp;@Model.Location
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6" style="padding-top: 2px; font-size: 8px; border: 1px solid black;">
+                            CROSS REFERENCE NUMBER OF SIMOPS / OTHER PERMITS / MOC TAKEN, IF ANY:&nbsp;&nbsp;@Model.CrossRef
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6" style="padding-top: 2px; font-size: 8px; border: 1px solid black;">
+                            <b>2. SAFETY PRECAUTIONS REQUIRED (to be completed by Authorizing Person)</b>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6">
+                            <table style="width: 800px; font-family: Calibri; font-size: 8px; border-collapse: collapse;">
+                                <tr>
+                                    <th colspan="2" style="border: 1px solid black;"><b>MANDETORY REQUIREMENTS</b></th>
+                                    <th style="border: 1px solid black;"><b>Yes</b></th>
+                                    <th style="border: 1px solid black;"><b>No</b></th>
+                                </tr>
+
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 6px; text-align: center; width: 30px;">1.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">Hazard Identification & Risk Assessment (HIRA),Tool Box Talk (TBT) & Life Saving Rule (LSR) Inspection are done.</td>
+                                    <td style="border:1px solid black; padding:6px;">@YesMark(1)</td>
+                                    <td style="border:1px solid black; padding:6px;">@NoMark(1)</td>
+                                </tr>
+
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 6px; text-align: center;">2.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">Replenished first aid box and 9 kg fire extinguisher with valid testing/refilling dates are available.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">@YesMark(2)</td>
+                                    <td style="border: 1px solid black; padding: 6px;">@NoMark(2)</td>
+                                </tr>
+
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 2px; text-align: center;">3.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">Plastic barricades with Safety display and pictograms are used at site.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">@YesMark(3)</td>
+                                    <td style="border: 1px solid black; padding: 6px;">@NoMark(3)</td>
+                                </tr>
+
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 2px; text-align: center;">4.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">
+                                        Valid STC cards for Workman STC No.&nbsp;&nbsp;@Model.STC1
+                                        &nbsp;&nbsp;STC No.&nbsp;&nbsp;@Model.STC2
+                                        &nbsp;&nbsp;STC No.&nbsp;&nbsp;@Model.STC3
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 6px;">@YesMark(4)</td>
+                                    <td style="border: 1px solid black; padding: 6px;">@NoMark(4)</td>
+                                </tr>
+
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 2px; text-align: center;">5.</td>
+                                    <td style="border: 1px solid black; padding: 6px;">PPEs are available & used - (a) Hard Hat (b) Safety goggles (c) Safety Shoes (d) Cotton Gloves.</td>
+                                    <td style="border:1px solid black; padding:6px;">@YesMark(5)</td>
+                                    <td style="border:1px solid black; padding:6px;">@NoMark(5)</td>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" style="border: 1px solid black;"><b>VERTICAL LIFT CHECKPOINTS</b></th>
+                                    <th style="border: 1px solid black;"><b>Yes</b></th>
+                                    <th style="border: 1px solid black;"><b>No</b></th>
+                                </tr>
+
+                                @{
+                                    string[] verticalLift = {
+                                                                                "Load Test Certificate-Form 11 for vertical machine and its validity.",
+                                                                                "Machine is erected on firm and leveled surface with base plates and sole plates.",
+                                                                                "Double hook, double lanyard Full body harness is inspected for cut/worn out fibers webbing etc and used by all workers on the machine.",
+                                                                                "Vertical path of travel of machine is free from any obstruction.",
+                                                                                "Machine is not in physical contact or potential to come in contact with external naked electric cable.",
+                                                                                "Machine’s own electrical cables are intact and Emergency STOP button is functional.",
+                                                                                "Machine is tested for the ascending and descending movement prior to start of the Job.",
+                                                                                "Machine is aligned properly considering work position; no need for operator to lean to reach.",
+                                                                                "Double hook, double lanyard full body harness is used and anchored to a permanent structure.",
+                                                                                "lifeline is used and adequately fastened, if applicable"
+                                                                };
+                                }
+
+                                @for (int i = 0; i < verticalLift.Length; i++)
+                                {
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px;">@(i + 1).</td>
+                                        <td style="border: 1px solid black; padding: 6px;">@verticalLift[i]</td>
+                                        <td style="border: 1px solid black; padding: 6px; width: 39px;">@YesMark(i + 6)</td>
+                                        <td style="border: 1px solid black; padding: 6px; width: 39px;">@NoMark(i + 6)</td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <th colspan="2" style="border: 1px solid black;"><b>METAL SCAFFOLDING CHECKPOINTS</b></th>
+                                    <th style="border: 1px solid black;"><b>Yes</b></th>
+                                    <th style="border: 1px solid black;"><b>No</b></th>
+                                </tr>
+
+                                @{
+                                    string[] metalScaffold = {
+                                                                                "Metal scaffolding is inspected prior to use and inspection tag is attached.",
+                                                                                "Scaffold is erected on firm and even surface with base plates and sole plates and braced properly.",
+                                                                                "Toe board, mid rail, Top rails and working platform are provided and extended upto 300 mm from the edge of scaffold and firmly secured.",
+                                                                                "Double hook, double lanyard Full body harness is inspected for cut/worn out fibers, webbing etc and used by all workers on the scaffold.",
+                                                                                "In case of movable Scaffold – wheel brakes and sole plate or ground anchor are used."
+                                                                };
+                                }
+
+                                @for (int i = 0; i < metalScaffold.Length; i++)
+                                {
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px;">@(i + 1).</td>
+                                        <td style="border: 1px solid black; padding: 6px;">@metalScaffold[i]</td>
+                                        <td style="border: 1px solid black; padding: 6px; width: 39px;">@YesMark(i + 16)</td>
+                                        <td style="border: 1px solid black; padding: 6px; width: 39px;">@NoMark(i + 16)</td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <th colspan="2" style="border: 1px solid black;">
+                                        <b>STEP LADDER CHECKPOINTS(Use single ladder for access and not as a work platform)</b>
+                                    </th>
+                                    <th style="border: 1px solid black;"><b>Yes</b></th>
+                                    <th style="border: 1px solid black;"><b>No</b></th>
+                                </tr>
+
+                                @{
+                                    string[] stepLadder = {
+                                                                                "Step Ladder not more than 3 meter height and fit to use with rubber soles is used.",
+                                                                                "Full body harness with lanyard inspected for cut/worn out fibers, webbing etc is used and anchored to a permanent structure.",
+                                                                                "Step ladder is inspected prior to use for damaged parts, slippery surface and other unsafe condition.",
+                                                                                "Step Ladder is kept on firm and leveled surface.",
+                                                                                "Spreaders with locking arrangements are used."
+                                                                };
+                                }
+
+                                @for (int i = 0; i < stepLadder.Length; i++)
+                                {
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 2px; text-align: center; width: 30px;">@(i + 1).</td>
+                                        <td style="border: 1px solid black; padding: 6px;">@stepLadder[i]</td>
+                                        <td style="border: 1px solid black; padding: 6px; width: 39px;">@YesMark(i + 21)</td>
+                                        <td style="border: 1px solid black; padding: 6px; width: 39px;">@NoMark(i + 21)</td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;"><b>Authorisation: MGL Site in-charge/AIC/DIC will be the authorizing person for issuing this permit at site.</b></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;">
+                                        I have explained the safety & technical requirement for WAH job to the competent person. He/she is hereby authorised to start the WAH job in his/her presence subject to the fulfillment of the above mentioned safety precautions at site.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border: 1px solid black;">
+                                        <table style="width: 800px; font-family: Calibri; font-size: 8px; border: 1px solid black; border-collapse: collapse;">
+                                            <tr>
+                                                <th style="border: 1px solid black;">Time</th>
+                                                <th style="border: 1px solid black;">1st Signatory</th>
+                                                <th style="border: 1px solid black;">Designation</th>
+                                                <th style="border: 1px solid black;">Contact Number</th>
+                                                <th style="border: 1px solid black;">Signature</th>
+                                            </tr>
+                                            <tr style="height:25px;">
+                                                <td style="border: 1px solid black; padding: 6px; width: 75px;">@Model.AuthTime</td>
+                                                <td style="border: 1px solid black; padding: 6px; text-align: center; width: 175px;">@Model.AuthName</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 150px;">@Model.AuthDesig</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 200px;">@Model.AuthContact</td>
+                                                <td style="border: 1px solid black; padding: 6px;">@Model.AuthSign</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;"><b>Competent person: TPE will be the competent person at site.</b></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px; font-size: 8px;">
+                                        I have understood the Safety & Technical requirement for above job. The site has been examined by myself in compliance to the above requirements and Tool Box Talk is conducted. Based on the same I herewith issue the permit to contractor representative at site for carrying out the job. I shall be available at site for the entire duration of the job and shall be informing AIC at the time of starting and closing the job.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border: 1px solid black;">
+                                        <table style="width: 800px; font-family: Calibri; font-size: 8px; border: 1px solid black; border-collapse: collapse;">
+                                            <tr>
+                                                <th style="border: 1px solid black;">Time</th>
+                                                <th style="border: 1px solid black;">2nd Signatory</th>
+                                                <th style="border: 1px solid black;">Designation</th>
+                                                <th style="border: 1px solid black;">Contact Number</th>
+                                                <th style="border: 1px solid black;">Signature</th>
+                                            </tr>
+                                            <tr style="height:25px;">
+                                                <td style="border: 1px solid black; padding: 6px; width: 75px;">@Model.TpeTime</td>
+                                                <td style="border: 1px solid black; padding: 6px; text-align: center; width: 175px;">@Model.TpeName</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 150px;">@Model.TpeDesig</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 200px;">@Model.TpeContact</td>
+                                                <td style="border: 1px solid black; padding: 6px;">@Model.TpeSign</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;"><b>Contractor’s representative at site : (Supervisor)</b></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;">
+                                        I have understood the safety & technical requirement for above job. The site has been examined by myself in compliance to the above requirements and the job is being done in complete compliance of the requirement.I shall be available at site for the entire duration of job.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border: 1px solid black;">
+                                        <table style="width: 800px; font-family: Calibri; font-size: 8px; border: 1px solid black; border-collapse: collapse;">
+                                            <tr>
+                                                <th style="border: 1px solid black;">Time</th>
+                                                <th style="border: 1px solid black;">3rd Signatory</th>
+                                                <th style="border: 1px solid black;">Designation</th>
+                                                <th style="border: 1px solid black;">Contact Number</th>
+                                                <th style="border: 1px solid black;">Signature</th>
+                                            </tr>
+                                            <tr style="height:25px;">
+                                                <td style="border: 1px solid black; padding: 6px; width: 75px;">@Model.SuperTime</td>
+                                                <td style="border: 1px solid black; padding: 6px; text-align: center; width: 175px;">@Model.SuperName</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 150px;">@Model.SuperDesig</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 200px;">@Model.SuperContact</td>
+                                                <td style="border: 1px solid black; padding: 6px;">@Model.SuperSign</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;"><b>Completion of work: to be filled by the competent person.</b></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border: 1px solid black;">
+                                        <table style="width: 800px; font-family: Calibri; font-size: 8px; border: 1px solid black; border-collapse: collapse;">
+                                            <tr>
+                                                <th style="border: 1px solid black;">Name</th>
+                                                <th style="border: 1px solid black;">Date</th>
+                                                <th style="border: 1px solid black;">In Time</th>
+                                                <th style="border: 1px solid black;">Sign</th>
+                                                <th style="border: 1px solid black;">Out Time</th>
+                                                <th style="border: 1px solid black;">Sign</th>
+                                                <th style="border: 1px solid black;">Remark</th>
+                                                <th style="border: 1px solid black;">Contact No.</th>
+                                            </tr>
+                                            <tr style="height:25px;">
+                                                <td style="border: 1px solid black; padding: 6px; text-align: center; width: 65px;">@Model.CowName</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 65px;">@Model.CowDate</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 65px;">@Model.CowInTime</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 65px;">@Model.CowSign</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 65px;">@Model.CowOutTime</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 65px;">@Model.CowSign2</td>
+                                                <td style="border: 1px solid black; padding: 6px;">Lock & Closed</td>
+                                                <td style="border: 1px solid black; padding: 6px; width: 75px;">@Model.CowContact</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;">
+                                        On completion of the work, copy of this permit must be returned to the Authorised Person i.e. AIC.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="border-collapse: collapse; padding: 6px;">
+                                        <b>Note : This work permit is valid for one day (24 hrs.) only starting from the time of issue of permit.</b>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

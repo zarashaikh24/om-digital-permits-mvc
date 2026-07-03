@@ -1,0 +1,641 @@
+﻿@model List<CleanValveManagement.Models.SMAReportModel>
+
+@{
+    ViewData["Title"] = "SMA Dashboard";
+}
+
+<div class="dashboard-wrapper">
+
+    <div class="dashboard-header">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
+            <div>
+                <h2>SMA Permits</h2>
+                <p>View and track SMA valve chamber permit requests.</p>
+            </div>
+           
+        </div>
+    </div>
+
+    <form asp-controller="Permit" asp-action="SMA" method="get" class="filter-card">
+        <div class="filter-title">Filters</div>
+
+        <div class="filter-row">
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Requested" selected="@(Context.Request.Query["status"] == "Requested" ? "selected" : null)">Requested</option>
+                <option value="Approved" selected="@(Context.Request.Query["status"] == "APPROVED" ? "selected" : null)">Approved</option>
+                <option value="Rejected"
+                        selected="@(Context.Request.Query["status"] == "REJECTED" ? "selected" : null)">
+                    Rejected
+                </option>
+                <option value="Closed" selected="@(Context.Request.Query["status"] == "Closed" ? "selected" : null)">Closed</option>
+            </select>
+
+            <input type="date"
+                   name="fromDate"
+                   placeholder="Start Date"
+                   value="@Context.Request.Query["fromDate"]" />
+
+            <input type="date"
+                   name="toDate"
+                   placeholder="Search Permit Number"
+                   value="@Context.Request.Query["toDate"]" />
+            <input type="text"
+                   name="permitNumber"
+                   placeholder="Search Permit Number"
+                   value="@Context.Request.Query["permitNumber"]" />
+
+            <button type="submit" class="apply-btn">
+                Apply
+            </button>
+
+            <a asp-controller="Permit"
+               asp-action="SMA"
+               class="clear-btn">
+                Clear Filter
+            </a>
+        </div>
+    </form>
+
+    <div class="record-count">
+        Total Records: <strong>@Model.Count</strong> | Showing: <strong>100</strong>
+    </div>
+
+    <div class="table-card">
+        @if (ViewBag.NoData != null)
+        {
+            <div class="alert alert-warning" style="margin-bottom:15px;">
+                @ViewBag.NoData
+            </div>
+        }
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Permit No</th>
+                    <th>Gascoseeker</th>
+                    <th>Hira Document</th>
+                    <th>TBT Document</th>
+                    <th>STC</th>
+                    <th>Technician</th>
+                    <th>ERP</th>
+                    <th>Other Image</th>
+                    <th>Closure Photo 1</th>
+                    <th>Closure Photo 2</th>
+                    <th>Closure Photo 3</th>
+                    <th>Valve Name</th>
+                    <th>District</th>
+                    <th>Valve Id</th>
+                    <th>AIC Name</th>
+                    <th>TPE Name</th>
+                    <th>STC No</th>
+                    <th>Created On</th>
+                    <th>Status</th>
+                    <th>Emp Id</th>
+                    <th>Review Message</th>
+                    <th>Approved On</th>
+                    <th>Closed On</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Take(100))
+                {
+                    <tr>
+                        <td>@item.PermitNo</td>
+                        <td>
+                            <img src="~/images/permits/gascoseeker.png"
+                                 width="80"
+                                 height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/gascoseeker.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/hira1.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/hira1.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/tbt1.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/tbt1.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/stc1.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/stc1.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/firstaidbox.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/firstaidbox.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/hira2.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/hira2.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/erp.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/erp.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/barricading1.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/barricading1.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/barricading2.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/barricading2.png')" />
+                        </td>
+                        <td>
+                            <img src="~/images/permits/erp.png"
+                                 width="80" height="60"
+                                 style="border-radius:8px; cursor:pointer;"
+                                 onclick="openImageModal('/images/permits/erp.png')" />
+                        </td>
+                        <td>@item.ValveName</td>
+                        <td>@item.District</td>
+                        <td>@item.ValveId</td>
+                        <td>@item.AICName</td>
+                        <td>@(string.IsNullOrEmpty(item.TPEName) ? "-" : item.TPEName)</td>
+                        <td>@item.STCNo</td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(item.CreatedOn)
+                                                    ? "-"
+                                                    : Convert.ToDateTime(item.CreatedOn).ToString("dd-MM-yyyy"))
+                        </td>
+                        <td>
+                            @(string.IsNullOrEmpty(item.Status) ? "-" : item.Status)
+                        </td>
+                        <td>@item.EmpId</td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(item.ReviewMessage)
+                                                    ? "-"
+                                                    : item.ReviewMessage)
+                        </td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(item.ApprovedOn)
+                                                    ? "-"
+                                                    : Convert.ToDateTime(item.ApprovedOn).ToString("dd-MM-yyyy"))
+                        </td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(item.ClosedOn)
+                                                    ? "-"
+                                                    : Convert.ToDateTime(item.ClosedOn).ToString("dd-MM-yyyy"))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.Count > 10)
+    {
+        <div class="pagination-container">
+            <div class="pagination-buttons">
+                <button id="prevBtn" class="page-btn">← Previous</button>
+                <button id="nextBtn" class="page-btn">Next →</button>
+            </div>
+
+            <div id="pageInfo"></div>
+        </div>
+    }
+
+</div>
+@* <div id="logoutModal" class="logout-modal"> *@
+    @* <div class="logout-modal-content"> *@
+        @* <h3>Logout Confirmation</h3> *@
+        @* <p>Are you sure you want to logout from O&M Digital Permits?</p> *@
+
+        @* <div class="logout-actions"> *@
+            @* <button type="button" class="cancel-btn" onclick="closeLogoutModal()">No</button> *@
+            @* <button type="button" class="confirm-btn" onclick="submitLogout()">Yes, Logout</button> *@
+        @* </div> *@
+    @* </div> *@
+@* </div> *@
+
+<style>
+    body {
+        background: #f4f7fb;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .dashboard-wrapper {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        margin-bottom: 24px;
+    }
+
+        .dashboard-header h2 {
+            color: #0a3d78;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .dashboard-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+    .logout-btn {
+        background: #dc2626;
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .filter-card {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+        margin-bottom: 24px;
+        border-left: 5px solid #0a4d94;
+    }
+
+    .filter-title {
+        color: #0a3d78;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    .filter-row {
+        display: grid;
+        grid-template-columns: 170px 170px 170px 1fr 100px 120px;
+        gap: 14px;
+        align-items: center;
+    }
+
+        .filter-row input,
+        .filter-row select {
+            padding: 12px 14px;
+            border: 1px solid #d6dbe3;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            min-width: 180px;
+        }
+
+            .filter-row input:focus,
+            .filter-row select:focus {
+                border-color: #0a4d94;
+                box-shadow: 0 0 0 3px rgba(10,77,148,0.08);
+            }
+
+
+        .filter-row button {
+            background: #0a4d94;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .filter-row button:hover {
+                background: #073a70;
+            }
+
+    .apply-btn {
+        background: #0a4d94;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        height: 46px;
+        font-weight: 600;
+    }
+
+    .search-box {
+        width: 350px !important;
+        min-width: 350px;
+        height: 48px;
+    }
+
+    .clear-btn {
+        background: #0a4d94;
+        color: white !important;
+        text-decoration: none;
+        height: 46px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+        .apply-btn:hover,
+        .clear-btn:hover {
+            background: #073a70;
+        }
+
+    .record-count {
+        background: white;
+        padding: 14px 18px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        color: #0a3d78;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        font-size: 15px;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        overflow-x: auto;
+    }
+
+    .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 2300px;
+    }
+
+        .report-table thead {
+            background: #0a3d78;
+            color: white;
+        }
+
+        .report-table th {
+            padding: 15px 14px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .report-table td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #1f2937;
+            white-space: nowrap;
+        }
+
+        .report-table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+    .pagination-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 25px;
+    }
+
+    .pagination-buttons {
+        display: flex;
+        gap: 20px;
+    }
+
+    .page-btn {
+        border: 1px solid #d6dbe3;
+        background: white;
+        color: #0a3d78;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+        .page-btn.active {
+            background: #0a4d94;
+            color: white;
+            border-color: #0a4d94;
+        }
+
+    .logout-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.45);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .logout-modal-content {
+        background: white;
+        width: 420px;
+        border-radius: 16px;
+        padding: 26px;
+        text-align: center;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.22);
+    }
+
+        .logout-modal-content h3 {
+            color: #0a3d78;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .logout-modal-content p {
+            color: #4b5563;
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+    .logout-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .cancel-btn {
+        background: #eef2f7;
+        color: #334155;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 9px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .confirm-btn {
+        background: #dc2626;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 9px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    #pageInfo {
+        font-size: 16px;
+        font-weight: 600;
+        color: #0a3d78;
+        text-align: center;
+    }
+
+    .employee-box {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 12px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+        .employee-box span {
+            font-size: 14px;
+        }
+
+        .employee-box strong {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+        }
+</style>
+
+<script>
+    function showLogoutModal() {
+        document.getElementById("logoutModal").style.display = "flex";
+    }
+
+    function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+    }
+
+    function submitLogout() {
+        document.getElementById("logoutForm").submit();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const rowsPerPage = 10;
+
+        const rows = Array.from(
+            document.querySelectorAll(".report-table tbody tr")
+        );
+
+        let currentPage = 1;
+
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const pageInfo = document.getElementById("pageInfo");
+
+        function showPage(page) {
+
+            rows.forEach((row, index) => {
+
+                row.style.display =
+                    index >= (page - 1) * rowsPerPage &&
+                    index < page * rowsPerPage
+                        ? ""
+                        : "none";
+            });
+
+            pageInfo.innerHTML = "Page " + page + " of " + totalPages;
+
+             prevBtn.style.display = (page === 1) ? "none" : "inline-block";
+    nextBtn.style.display = (page === totalPages) ? "none" : "inline-block";
+        }
+
+        prevBtn.addEventListener("click", function () {
+
+            if (currentPage > 1) {
+
+                currentPage--;
+
+                showPage(currentPage);
+            }
+        });
+
+        nextBtn.addEventListener("click", function () {
+
+            if (currentPage < totalPages) {
+
+                currentPage++;
+
+                showPage(currentPage);
+            }
+        });
+
+        showPage(currentPage);
+
+    });
+</script>
+<div id="imageModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; overflow:hidden;">
+
+    <button onclick="closeImageModal()"
+            style="position:absolute; top:20px; right:30px; font-size:32px; color:white; background:none; border:none; z-index:10000;">
+        ×
+    </button>
+
+    <div style="position:absolute; bottom:30px; left:50%; transform:translateX(-50%); z-index:10000;">
+        
+    </div>
+
+    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <img id="modalImage"
+             src=""
+             style="max-width:85%; max-height:80%; transform:scale(1); transform-origin:center center;" />
+    </div>
+</div>
+
+<script>
+    let scale = 1;
+
+    function openImageModal(src) {
+        scale = 1;
+
+        const modal = document.getElementById("imageModal");
+        const img = document.getElementById("modalImage");
+
+        img.src = src;
+        img.style.transform = "scale(1)";
+
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeImageModal() {
+        document.getElementById("imageModal").style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    document.getElementById("modalImage").addEventListener("wheel", function (e) {
+        e.preventDefault();
+
+        if (e.deltaY < 0) {
+            scale += 0.1;
+        } else {
+            scale -= 0.1;
+        }
+
+        if (scale < 0.5) scale = 0.5;
+        if (scale > 4) scale = 4;
+
+        this.style.transform = "scale(" + scale + ")";
+    });
+</script>

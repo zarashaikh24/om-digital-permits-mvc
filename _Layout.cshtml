@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Clean Valve Management</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CleanValveManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    @{
+        bool hideHeader =
+        Context.Request.Path == "/" ||
+        Context.Request.Path == "/Account/Login";
+    }
+    @if (!hideHeader)
+    {
+        <header class="mgl-app-header">
+
+            <div class="mgl-header-left">
+                <img src="~/images/mgl-logo.png"
+                     class="mgl-header-logo"
+                     alt="MGL Logo" />
+
+                <div class="mgl-header-title">
+                    O&M Digital Permits
+                </div>
+            </div>
+
+            <div class="mgl-header-actions">
+
+                <a asp-controller="Permit"
+                   asp-action="Dashboard"
+                   class="mgl-dashboard-btn">
+                    Dashboard
+                </a>
+
+                <form asp-controller="Account"
+                      asp-action="Logout"
+                      method="post"
+                      id="logoutForm">
+
+                    <button type="button"
+                            class="profile-btn"
+                            onclick="toggleProfileMenu()">
+                        👤
+                    </button>
+
+                    <div class="profile-menu" id="profileMenu">
+
+                        <div class="profile-name">
+                            @Context.Session.GetString("EmpName")
+                        </div>
+
+                        <div class="profile-item">
+                            Employee ID : @Context.Session.GetInt32("Emp_ID")
+                        </div>
+
+                        <div class="profile-item">
+                            Designation : @Context.Session.GetString("Designation")
+                        </div>
+
+                        <div class="profile-item">
+                            Login Time : @Context.Session.GetString("LoginTime")
+                        </div>
+
+                        <hr />
+
+                        <button type="button"
+                                class="profile-logout"
+                                onclick="showLogoutModal()">
+                            Logout
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </header>
+    }
+
+    @RenderBody()
+
+    @if (!hideHeader)
+    {
+        <div id="logoutModal" class="logout-modal">
+
+            <div class="logout-box">
+
+                <h3>Confirm Logout</h3>
+
+                <p>Are you sure you want to logout?</p>
+
+                <div class="logout-actions">
+
+                    <button class="cancel-btn"
+                            onclick="closeLogoutModal()">
+                        Cancel
+                    </button>
+
+                    <button class="confirm-btn"
+                            onclick="document.getElementById('logoutForm').submit();">
+                        Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+
+        function showLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+    </script>
+    <script>
+
+        function toggleProfileMenu(){
+
+            var menu = document.getElementById("profileMenu");
+
+            if(menu.style.display === "block"){
+
+                menu.style.display = "none";
+
+            }
+            else{
+
+                menu.style.display = "block";
+
+            }
+
+        }
+
+        window.onclick = function(event){
+
+            if(!event.target.closest(".profile-btn") &&
+               !event.target.closest(".profile-menu")){
+
+                document.getElementById("profileMenu").style.display = "none";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

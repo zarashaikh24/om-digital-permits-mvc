@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Verify OTP";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Verify OTP</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .auth-container {
+            width: 520px;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #0a3d78;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #d6dbe3;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            background: #0a4d94;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 25px;
+            cursor: pointer;
+        }
+
+            .auth-btn:hover {
+                background: #083c72;
+            }
+
+        .error {
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .back-login {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+            .back-login a {
+                text-decoration: none;
+                color: #0a4d94;
+                font-weight: 600;
+                font-size: 14px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <h1>Verify OTP</h1>
+
+        <p class="subtitle">
+            Enter the OTP sent to your registered email address.
+        </p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="error">@ViewBag.Error</div>
+        }
+
+        <form method="post">
+            <label>OTP</label>
+
+            <input type="text"
+                   name="otp"
+                   class="form-control"
+                   placeholder="Enter OTP"
+                   required />
+
+            <button type="submit" class="auth-btn">
+                Verify OTP
+            </button>
+        </form>
+
+        <div class="back-login">
+            <a href="/Account/Login">← Back to Login</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
