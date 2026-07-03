@@ -134,11 +134,49 @@ Build → Run
 
 ---
 
-# 📸 Screenshots
+# 📸 Project Screenshots
 
-> Screenshots will be added soon.
+## 🔐 Login Page
+
+![Login Page](login.png)
 
 ---
+
+## 📊 Dashboard 1
+
+![Dashboard](dashboard1.png)
+
+---
+
+## 📈 Dashboard 2
+
+![Dashboard Analytics](dashboard2.png)
+
+---
+
+## 📋 Dashboard 3
+
+![Permit Management](dashboard3.png)
+
+---
+
+## 📋 Dashboard 4
+
+![Permit Management](dashboard4.png)
+
+---
+
+## 📑 CNG Permit Module
+
+![CNG Module](cng_module.png)
+
+---
+
+## 🖨️ Printable Permit Document
+
+![Permit Document](permit_doc.png)
+
+
 
 # 🔒 Disclaimer
 
